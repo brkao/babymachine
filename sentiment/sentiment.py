@@ -10,6 +10,9 @@ import pandas as pd
 #import squarify
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
+print("Starting Sentiment bot")
+sys.stdout.flush()
+
 CLIENT_ID = os.getenv('CLIENT_ID')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 USERNAME = os.getenv('USERNAME')
@@ -157,6 +160,7 @@ def harvest():
     r = redis.Redis()
     r.lpush("scores", json.dumps(d))
     r.ltrim("scores", 0, 99)
+
 
 while True:
     harvest()

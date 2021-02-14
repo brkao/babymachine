@@ -78,7 +78,7 @@ func main() {
 	}
 
 	var wg sync.WaitGroup
-	fmt.Println("Main: starting redditBot")
+	fmt.Println("Main: starting Velocity redditBot")
 	wg.Add(1)
 	go (&rbot).start()
 

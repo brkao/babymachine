@@ -1,2 +1,2 @@
-worker: python3 sentiment/sentiment.py
-worker: babymachine 
+sentiment: python3 sentiment/sentiment.py
+velocity: babymachine
