@@ -19,14 +19,12 @@ type RedditBot struct {
 	maxRecords      int32
 	maxIntervals    int32
 	updateCountdown int32
-
-	started    time.Time
-	LastUpdate time.Time `json:"Timestamp"`
-
-	clientId     string
-	clientSecret string
-	username     string
-	password     string
+	started         time.Time
+	LastUpdate      time.Time `json:"Timestamp"`
+	clientId        string
+	clientSecret    string
+	username        string
+	password        string
 }
 
 type PostRecord struct {
@@ -76,6 +74,7 @@ func (r *RedditBot) storeToRedis() {
 
 	data, _ := json.Marshal(r)
 	c.Do("LPUSH", "dd_velocities", data)
+	c.Do("LTRIM", "dd_velocities", 0, 99)
 	fmt.Printf("Stored to REDIS\n")
 }
 
