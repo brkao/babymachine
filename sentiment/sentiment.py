@@ -158,8 +158,8 @@ def harvest():
     d = [time.asctime(time.localtime(time.time())), scores]
 
     r = redis.Redis()
-    r.lpush("scores", json.dumps(d))
-    r.ltrim("scores", 0, 99)
+    r.lpush("sentiment_scores", json.dumps(d))
+    r.ltrim("sentiment_scores", 0, 99)
 
 
 while True:

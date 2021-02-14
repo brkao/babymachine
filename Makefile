@@ -1,8 +1,8 @@
-run: babymachine
+run: velocity
 	@PATH="$(PWD):$(PATH)" heroku local
 
-babymachine: main.go reddit.go
-	go build -o babymachine main.go reddit.go
+velocity: main.go reddit.go
+	go build -o velocity main.go reddit.go
 
 clean:
 	rm -rf bin
