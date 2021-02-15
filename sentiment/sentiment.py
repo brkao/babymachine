@@ -9,6 +9,8 @@ import pandas as pd
 #import matplotlib.pyplot as plt
 #import squarify
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+import nltk
+nltk.download('vader_lexicon')
 
 print("Starting Sentiment bot")
 sys.stdout.flush()
