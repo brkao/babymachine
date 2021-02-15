@@ -97,7 +97,6 @@ def harvest():
             submission_count += 1
             flair = submission.link_flair_text
             author = submission.author.name
-
             # checking: post upvote ratio # of upvotes, post flair, and author
             if submission.upvote_ratio >= upvoteRatio and submission.ups > ups and (flair in post_flairs or flair is None) and author not in ignoreAuthP:
                 submission.comment_sort = 'new'
@@ -198,7 +197,7 @@ def harvest():
     #df = df.T
     #print(df.to_json())
 
-    d = {"timestamp" : time.asctime(time.localtime(time.time()))}
+    d = {"timestamp" : time.strftime("%m-%d-%Y %T %Z", time.localtime(time.time()))}
     d["tickers"] = sortedscores
 
     r = redis.from_url(os.environ.get("REDIS_URL"))
