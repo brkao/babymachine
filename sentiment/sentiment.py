@@ -36,9 +36,9 @@ reddit = praw.Reddit(user_agent="bigbrainbaby:collector",
 interval = 30 * 60
 
 # sub-reddit to search
-#subs = ['wallstreetbets', 'stocks', 'investing', 'stockmarket', 'TrailerParkBets']
+subs = ['wallstreetbets', 'stocks', 'investing', 'stockmarket', 'TrailerParkBets']
 #subs = ['stocks']
-subs = ['TrailerParkBets']
+#subs = ['TrailerParkBets']
 
 
 # posts flairs to search || None flair is automatically considered
