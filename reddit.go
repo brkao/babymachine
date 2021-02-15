@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-var timeZone string = "America/Los_Angeles"
+var timeZone string = "America/New_York"
 
 func TimeIn(t time.Time, name string) (time.Time, error) {
 	loc, err := time.LoadLocation(name)
@@ -92,7 +92,7 @@ func (r *RedditBot) topPlain() string {
 
 	var ret string
 
-	loc, err := time.LoadLocation("America/Los_Angeles")
+	loc, err := time.LoadLocation(timeZone)
 	if err != nil {
 		fmt.Println(err)
 		return ""

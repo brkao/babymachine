@@ -14,7 +14,7 @@ nltk.download('vader_lexicon')
 
 print("Starting Sentiment bot")
 sys.stdout.flush()
-os.environ["TZ"]="US/Pacific"
+os.environ["TZ"]="US/Eastern"
 time.tzset()
 
 CLIENT_ID = os.getenv('CLIENT_ID')
@@ -36,9 +36,9 @@ reddit = praw.Reddit(user_agent="bigbrainbaby:collector",
 interval = 30 * 60
 
 # sub-reddit to search
-subs = ['wallstreetbets', 'stocks', 'investing', 'stockmarket', 'TrailerParkBets']
+#subs = ['wallstreetbets', 'stocks', 'investing', 'stockmarket', 'TrailerParkBets']
 #subs = ['stocks']
-#subs = ['TrailerParkBets']
+subs = ['TrailerParkBets']
 
 
 # posts flairs to search || None flair is automatically considered
