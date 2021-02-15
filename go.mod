@@ -1,4 +1,4 @@
-module velocity
+module babymachine
 
 go 1.15
 
