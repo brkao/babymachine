@@ -28,6 +28,9 @@ reddit = praw.Reddit(user_agent="bigbrainbaby:collector",
 '''############################################################################'''
 # set the program parameters
 
+#how much time to sleep between each harvest, in seconds
+interval = 30 * 60
+
 # sub-reddit to search
 subs = ['wallstreetbets', 'stocks', 'investing', 'stockmarket', 'TrailerParkBets']
 #subs = ['stocks']
@@ -204,7 +207,7 @@ while True:
     harvest()
     print("Sleep")
     sys.stdout.flush()
-    time.sleep(10)
+    time.sleep(interval)
 
 # Date Visualization
 # most mentioned picks
