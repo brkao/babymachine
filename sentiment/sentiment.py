@@ -155,7 +155,8 @@ def harvest():
     #df = df.T
     #print(df.to_json())
 
-    d = [time.asctime(time.localtime(time.time())), scores]
+    d = {"timestamp" : time.asctime(time.localtime(time.time()))}
+    d["tickers"] = scores
 
     r = redis.Redis()
     r.lpush("sentiment_scores", json.dumps(d))
