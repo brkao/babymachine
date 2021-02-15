@@ -194,9 +194,11 @@ func (r *RedditBot) start() {
 
 			r.harvest()
 			fmt.Println("Harvest done")
-			for _, val := range r.RecordList {
-				val.printout()
-			}
+			/*
+				for _, val := range r.RecordList {
+					val.printout()
+				}
+			*/
 			r.storeToRedis()
 			fmt.Println("\n")
 		case <-countdownTicker.C:
