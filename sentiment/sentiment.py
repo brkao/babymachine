@@ -27,20 +27,48 @@ reddit = praw.Reddit(user_agent="bigbrainbaby:collector",
 
 '''############################################################################'''
 # set the program parameters
-#subs = ['wallstreetbets', 'stocks', 'investing', 'stockmarket']     # sub-reddit to search
-subs = ['TrailerParkBets']     # sub-reddit to search
-#post_flairs = {'Daily Discussion', 'Weekend Discussion', 'Discussion'}    # posts flairs to search || None flair is automatically considered
-post_flairs = {}    # posts flairs to search || None flair is automatically considered
-goodAuth = {'AutoModerator'}   # authors whom comments are allowed more than once
-uniqueCmt = True                # allow one comment per author per symbol
-ignoreAuthP = {'example'}       # authors to ignore for posts
-ignoreAuthC = {'example'}       # authors to ignore for comment
-upvoteRatio = 0.00         # upvote ratio for post to be considered, 0.70 = 70%
-ups = 0       # define # of upvotes, post is considered if upvotes exceed this #
-limit = 100      # define the limit, comments 'replace more' limit
-upvotes = 0     # define # of upvotes, comment is considered if upvotes exceed this #
-picks = 10     # define # of picks here, prints as "Top ## picks are:"
-picks_ayz = 5   # define # of picks for sentiment analysis
+
+# sub-reddit to search
+subs = ['wallstreetbets', 'stocks', 'investing', 'stockmarket', 'TrailerParkBets']
+#subs = ['stocks']
+#subs = ['TrailerParkBets']
+
+
+# posts flairs to search || None flair is automatically considered
+post_flairs = {'DD', 'YOLO', 'Company Discussion', 'Daily Discussion', 'Weekend Discussion', 'Discussion'}
+
+# authors whom comments are allowed more than once
+goodAuth = {'AutoModerator'}
+
+# allow one comment per author per symbol
+uniqueCmt = True
+
+# authors to ignore for posts
+ignoreAuthP = {'example'}
+
+# authors to ignore for comment
+ignoreAuthC = {'example'}
+
+# upvote ratio for post to be considered, 0.70 = 70%
+upvoteRatio = 0.50
+
+# number of upvotes required for a post to be considered
+ups = 5
+
+# define the limit, comments 'replace more' limit, this is the
+# number of iterations that the comment replace more will be called
+limit = 100
+
+# number of upvotes required for a comment to be considered
+upvotes = 2
+
+# define # of picks here, prints as "Top ## picks are:"
+# not current used since only sentiment is stored in redis
+picks = 30
+
+# define # of picks for sentiment analysis
+# this is the number of stock symbols that sentiment analysis will run on
+picks_ayz = 30
 '''############################################################################'''
 
 def harvest():
@@ -52,7 +80,10 @@ def harvest():
     for sub in subs:
         subreddit = reddit.subreddit(sub)
         hot_python = subreddit.hot()    # sorting posts by hot
+
         print("Harvesting /r/%s" % sub)
+        sys.stdout.flush()
+
         submission_count = 0
         # Extracting comments, symbols from subreddit
         for submission in hot_python:
@@ -101,6 +132,7 @@ def harvest():
 
 
     print("Done Harvesting...")
+    sys.stdout.flush()
 
     # sorts the dictionary
     symbols = dict(sorted(tickers.items(), key=lambda item: item[1], reverse = True))
@@ -109,6 +141,7 @@ def harvest():
 
     # print top picks
     print("It took {t:.2f} seconds to analyze {c} comments in {p} posts in {s} subreddits.\n".format(t=time_elapsed, c=c_analyzed, p=posts, s=len(subs)))
+    sys.stdout.flush()
     #print("Posts analyzed saved in titles")
     #for i in titles: print(i)  # prints the title of the posts analyzed
 
@@ -147,7 +180,10 @@ def harvest():
         for key in score:
             scores[symbol][key] = scores[symbol][key] / symbols[symbol]
             scores[symbol][key]  = "{pol:.3f}".format(pol=scores[symbol][key])
+        #print(symbols[symbol])
+        scores[symbol]['count'] = symbols[symbol]
 
+    sortedscores = dict(sorted(scores.items(), key=lambda item: item[1]['count'], reverse = True))
     # printing sentiment analysis
     #print(f"\nSentiment analysis of top {picks_ayz} picks:")
     #df = pd.DataFrame(scores)
@@ -156,12 +192,13 @@ def harvest():
     #print(df.to_json())
 
     d = {"timestamp" : time.asctime(time.localtime(time.time()))}
-    d["tickers"] = scores
+    d["tickers"] = sortedscores
 
     r = redis.Redis()
     r.lpush("sentiment_scores", json.dumps(d))
     r.ltrim("sentiment_scores", 0, 99)
-
+    print("Stored to REDIS")
+    sys.stdout.flush()
 
 while True:
     harvest()
