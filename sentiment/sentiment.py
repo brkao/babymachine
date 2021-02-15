@@ -1,6 +1,9 @@
 import praw
 import sys
 import json
+from json import encoder
+encoder.FLOAT_REPR = lambda o: format(o, '.2f')
+
 import redis
 import os
 from data import *
@@ -36,8 +39,8 @@ reddit = praw.Reddit(user_agent="bigbrainbaby:collector",
 interval = 30 * 60
 
 # sub-reddit to search
-subs = ['wallstreetbets', 'stocks', 'investing', 'stockmarket', 'TrailerParkBets']
-#subs = ['stocks']
+#subs = ['wallstreetbets', 'stocks', 'investing', 'stockmarket', 'TrailerParkBets']
+subs = ['stocks']
 #subs = ['TrailerParkBets']
 
 
@@ -185,7 +188,7 @@ def harvest():
         # calculating avg.
         for key in score:
             scores[symbol][key] = scores[symbol][key] / symbols[symbol]
-            scores[symbol][key]  = "{pol:.3f}".format(pol=scores[symbol][key])
+            #scores[symbol][key]  = "{pol:.3f}".format(pol=scores[symbol][key])
         #print(symbols[symbol])
         scores[symbol]['count'] = symbols[symbol]
 
