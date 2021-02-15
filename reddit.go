@@ -10,6 +10,16 @@ import (
 	"time"
 )
 
+var timeZone string = "America/Los_Angeles"
+
+func TimeIn(t time.Time, name string) (time.Time, error) {
+	loc, err := time.LoadLocation(name)
+	if err == nil {
+		t = t.In(loc)
+	}
+	return t, err
+}
+
 type RedditBot struct {
 	bot             reddit.Bot
 	subreddit       []string
@@ -147,7 +157,11 @@ func (r *RedditBot) addNewRecord(po *PostRecord) {
 }
 
 func (r *RedditBot) start() {
-	r.started = time.Now()
+	t, err := TimeIn(time.Now(), timeZone)
+	if err != nil {
+		t = time.Now()
+	}
+	r.started = t
 
 	b, err := reddit.NewBotFromAgentFile(".prof", 0)
 	if err != nil {
@@ -159,7 +173,8 @@ func (r *RedditBot) start() {
 
 	fmt.Printf("Bot Start: maxIntervals %d interval %d maxRecords %d\n",
 		r.maxIntervals, r.interval, r.maxRecords)
-	r.LastUpdate = time.Now()
+
+	r.LastUpdate = r.started
 	r.harvest()
 	fmt.Println("Initial Harvest done")
 	r.storeToRedis()
@@ -170,7 +185,13 @@ func (r *RedditBot) start() {
 		select {
 		case <-ticker.C:
 			fmt.Println("Timer, harvesting")
-			r.LastUpdate = time.Now()
+
+			t, err = TimeIn(time.Now(), timeZone)
+			if err != nil {
+				t = time.Now()
+			}
+			r.LastUpdate = t
+
 			r.harvest()
 			fmt.Println("Harvest done")
 			for _, val := range r.RecordList {
