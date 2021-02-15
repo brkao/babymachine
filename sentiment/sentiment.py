@@ -199,7 +199,7 @@ def harvest():
     d = {"timestamp" : time.asctime(time.localtime(time.time()))}
     d["tickers"] = sortedscores
 
-    r = redis.Redis()
+    r = redis.from_url(os.environ.get("REDIS_URL"))
     r.lpush("sentiment_scores", json.dumps(d))
     r.ltrim("sentiment_scores", 0, 99)
     print("Stored to REDIS")
