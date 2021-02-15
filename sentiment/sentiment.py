@@ -14,6 +14,8 @@ nltk.download('vader_lexicon')
 
 print("Starting Sentiment bot")
 sys.stdout.flush()
+os.environ["TZ"]="US/Pacific"
+time.tzset()
 
 CLIENT_ID = os.getenv('CLIENT_ID')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
