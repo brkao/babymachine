@@ -45,7 +45,18 @@ subs = ['wallstreetbets', 'stocks', 'investing', 'stockmarket', 'TrailerParkBets
 
 
 # posts flairs to search || None flair is automatically considered
-post_flairs = {'DD', 'YOLO', 'Company Discussion', 'Daily Discussion', 'Weekend Discussion', 'Discussion'}
+post_flairs = {'DD',
+               'YOLO',
+               'Company Discussion',
+               'Daily Discussion',
+               'Weekend Discussion',
+               'Discussion',
+               'Company Analysis',
+               'Company News',
+               'ETFs',
+               'Technical Analysis',
+               'Fundamentals/DD'
+               }
 
 # authors whom comments are allowed more than once
 goodAuth = {'AutoModerator'}
