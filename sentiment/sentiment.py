@@ -36,7 +36,7 @@ reddit = praw.Reddit(user_agent="bigbrainbaby:collector",
 # set the program parameters
 
 #how much time to sleep between each harvest, in seconds
-interval = 30 * 60
+interval = 45 * 60
 
 # sub-reddit to search
 subs = ['wallstreetbets', 'stocks', 'investing', 'stockmarket', 'TrailerParkBets']
@@ -67,7 +67,7 @@ ups = 5
 
 # define the limit, comments 'replace more' limit, this is the
 # number of iterations that the comment replace more will be called
-limit = 100
+limit = 200
 
 # number of upvotes required for a comment to be considered
 upvotes = 2
