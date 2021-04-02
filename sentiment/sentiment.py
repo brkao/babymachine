@@ -78,7 +78,7 @@ ups = 5
 
 # define the limit, comments 'replace more' limit, this is the
 # number of iterations that the comment replace more will be called
-limit = 200
+limit = 100
 
 # number of upvotes required for a comment to be considered
 upvotes = 2
